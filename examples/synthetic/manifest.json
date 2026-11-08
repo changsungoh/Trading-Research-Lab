@@ -2,19 +2,19 @@
   "label": "SYNTHETIC DATA ONLY - NOT LIVE PERFORMANCE",
   "seed": 20261109,
   "holdout_start": "2025-02-17",
-  "python": "3.14.5",
+  "python": "3.13.18",
   "plotting": "3.11.2",
   "files": {
-    "allocation.json": "7d207d5da77c0725bfeb6c218db1b86a32a66dfe3ed30da3124e6cc1e862a91a",
-    "execution.json": "c2948bfabbc725aa8f2a015679b23427094089a8de91cfefedaba60a8d77622c",
-    "figures/01_quality_and_uncertainty.png": "5c1ea9be2c666fb042bef922e3ad36ced5fdde3033ec1ef56f2611f231372d71",
-    "figures/02_costs_and_unknown_exits.png": "c3eb6c13ecea664e478b9ce1588903b51e50f7b4b8cf9c977337e5419f99692c",
-    "figures/03_allocation_and_stress.png": "eb773291609f86fdbad7a6aa5368507b5b0acf6a15a733f94ccee92b289a1ae9",
-    "figures/04_market_making_inventory.png": "5418b71150cc415af9e99a002e6a85c030a625448ffeade3a6e68963f1993ff9",
-    "market_making.json": "35f634fe0e4d1005640a4b764e988080c1c6fd9aa93618de795f86dd181f368e",
-    "README.md": "6e5b4f7c6a10de85fa6fd3d94fb23efeb4b4ba9c64df3bdaea0900c233a076fe",
-    "statistics.json": "9cc46f7bec33d7b915f0e73e9e35bd8a9418df87cd7f7281aab15f96fed2acdc",
-    "statistics.md": "9c7944f95d63b22b5556ac11c1cffe6fe869bee9cb45be5160099fe909098b2b",
-    "synthetic_inputs.json": "ad04532a705ea40875a84ddc26ad4f0f4a8c3e1bb40d476ba87aa55f36892828"
+    "README.md": "96fb7f1757da8f68e669d5c925d541441296d45f8fb4a521285af6febf65759d",
+    "allocation.json": "ac90458d79e27f6f739d173f9df4a72b0ea85f8ffc09ba0baa7bff3e94e8b474",
+    "execution.json": "d88f5d0717e9a0016f526eb9c5d7f86181f578d09124138064376a71868e1dc3",
+    "figures/01_quality_and_uncertainty.png": "a4684ced14f50a68d2a4ff7d0e6c8c5409401ed21b57aea18766f250e0614782",
+    "figures/02_costs_and_unknown_exits.png": "ba851e985579010e1947103f7345e29b62f1869ed579718c6f6995a496a4ac97",
+    "figures/03_allocation_and_stress.png": "fc43be715e06bbf7ae48bead6a0c3adfed92b813acd0c54b60f11c71a42a49ee",
+    "figures/04_market_making_inventory.png": "56d325bde6cd55cb3c16386a4dc8f6e212a096327826f32c2083cbefceac8269",
+    "market_making.json": "0a958b6604e1d05f973d7beb7e8ff8a586a731c7cb72fbeb837aaf2d7b31ccf0",
+    "statistics.json": "b5963644309f8b253a3d0cca0fd5d3b8e3c19efe01c62c99ace7cc364ccf9ccc",
+    "statistics.md": "eade14d3d77da8b11043b6952c3fa27d4b660497070b11cc59866775e32b9a93",
+    "synthetic_inputs.json": "746c63c90e99b0f2f3e2b5d627e2c6959ce34579643ef8faee0c90e24a5508ba"
   }
 }

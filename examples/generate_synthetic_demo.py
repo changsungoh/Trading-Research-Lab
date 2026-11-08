@@ -106,9 +106,11 @@ def graphs(directory, stats, executions, allocation, maker):
                          'axes.spines.right': False, 'axes.titleweight': 'bold', 'figure.facecolor': '#f6f8fb',
                          'axes.facecolor': '#ffffff', 'savefig.facecolor': '#f6f8fb'})
     blue, green, orange, red = '#2458a6', '#178875', '#db9437', '#c45162'
-    def save(fig, name, title, subtitle):
+    def save(fig, name, title, subtitle, note=None):
         fig.suptitle(title, fontsize=19, fontweight='bold', x=.07, ha='left', y=.99)
         fig.text(.07, .91, subtitle, color='#536174', fontsize=10)
+        if note:
+            fig.text(.07, .875, note, color='#8d3647', fontsize=9.5, style='italic')
         fig.text(.07, .018, LABEL + ' | Fixed seeds; illustrative assumptions; no selected winner.',
                  color='#8d3647', fontsize=9, fontweight='bold')
         fig.subplots_adjust(left=.09, right=.97, top=.81, bottom=.17, wspace=.38, hspace=.5)
@@ -128,6 +130,7 @@ def graphs(directory, stats, executions, allocation, maker):
         axes[1].errorbar(item['mean'], y, xerr=[[item['mean']-lo],[hi-item['mean']]], fmt='o',
                          color=blue, capsize=5, markersize=7)
     axes[1].set_yticks(range(3), ['All dates','Exploration','Fixed date split*'])
+    axes[1].set_ylim(-1,3)
     axes[1].axvline(0,color='#8994a3',ls='--',lw=1); axes[1].set_xlabel('10m mean return (percentage points)')
     axes[1].set_title('Date-clustered 95% intervals', loc='left')
     save(fig,'01_quality_and_uncertainty.png','Measure quality before interpreting returns',
@@ -138,6 +141,10 @@ def graphs(directory, stats, executions, allocation, maker):
     for x,(g,n) in enumerate(zip(gross,net)):
         axes[0].bar(x-.16,g,width=.3,color=blue,label='Reference gross' if x==0 else None)
         axes[0].bar(x+.16,n,width=.3,color=orange,label='After assumed costs' if x==0 else None)
+    for x,(g,n) in enumerate(zip(gross,net)):
+        axes[0].text(x-.16,g-.012,f'{g:.3f}',ha='center',va='top',fontsize=8)
+        axes[0].text(x+.16,n-.012,f'{n:.3f}',ha='center',va='top',fontsize=8)
+    axes[0].set_ylim(min(net+gross)-.07,.02)
     axes[0].set_xticks([0,1],labels); axes[0].axhline(0,color='#8994a3',lw=1)
     axes[0].set_ylabel('Mean closed-trade return (percentage points)')
     axes[0].legend(fontsize=8,frameon=False); axes[0].set_title('Complete-input controlled comparison',loc='left')
@@ -145,19 +152,25 @@ def graphs(directory, stats, executions, allocation, maker):
     selected=[executions[1],executions[3],executions[2]]
     axes[1].barh(status_labels,[r['closed'] for r in selected],color=green,label='Closed')
     axes[1].barh(status_labels,[r['unresolved'] for r in selected],left=[r['closed'] for r in selected],color=red,label='Unpriced')
-    axes[1].set_xlabel('Filled positions'); axes[1].legend(frameon=False,fontsize=8)
+    peak=max(r['closed']+r['unresolved'] for r in selected)
+    axes[1].set_xlim(0,peak*1.5)
+    for y,r in enumerate(selected):
+        axes[1].text(r['closed']+r['unresolved']+peak*.02,y,f"{r['closed']} closed / {r['unresolved']} unpriced",va='center',fontsize=8.5)
+    axes[1].set_xlabel('Filled positions'); axes[1].legend(frameon=False,fontsize=8,loc='lower right')
     axes[1].set_title('Missing exits keep capital reserved',loc='left')
     save(fig,'02_costs_and_unknown_exits.png','Costs and missing exits change the answer',
          '10m long-only scenarios. Clean inputs are a separate counterfactual, never repaired real observations.')
     fig, axes = plt.subplots(1,2,figsize=(12,5.8))
     colors=[blue,green,orange]; names=['Fixed cash','Fixed fraction','Inverse volatility']
     for result,color,label in zip(allocation['results'],colors,names):
-        snap=result['allocation_analysis']['snapshots']
-        axes[0].plot(range(len(snap)),[s['gross_fraction']*100 for s in snap],color=color,alpha=.8,lw=1,label=label)
+        peaks={}
+        for item in result['allocation_analysis']['snapshots']:
+            day=item['time'][:10]; peaks[day]=max(peaks.get(day,0),item['gross_fraction']*100)
+        axes[0].plot(range(1,len(peaks)+1),list(peaks.values()),color=color,lw=1.8,marker='o',markersize=3.5,label=label)
     axes[0].axhline(80,color=red,ls='--',lw=1,label='Entry gross cap')
-    axes[0].set_ylim(0,100); axes[0].set_xlabel('Entry/exit snapshot index (policy-specific)')
-    axes[0].set_ylabel('Cost-basis gross exposure (%)'); axes[0].legend(fontsize=8,frameon=False)
-    axes[0].set_title('Exposure paths; no market-value claims',loc='left')
+    axes[0].set_ylim(0,100); axes[0].set_xlabel('Synthetic trading day (fixed split onward)')
+    axes[0].set_ylabel('Daily peak cost-basis gross exposure (%)'); axes[0].legend(fontsize=8,frameon=False,loc='lower right')
+    axes[0].set_title('Daily peak exposure; no market-value claims',loc='left')
     stress_names=list(allocation['results'][0]['allocation_analysis']['stress_worst'])
     for offset,(stress,color) in enumerate(zip(stress_names,[blue,red])):
         values=[r['allocation_analysis']['stress_worst'][stress]['loss_pct'] for r in allocation['results']]
@@ -176,7 +189,8 @@ def graphs(directory, stats, executions, allocation, maker):
     axes[0].set_ylabel('Signed inventory (shares)');axes[1].set_ylabel('Marked P&L (arbitrary units)')
     axes[1].set_xlabel('Synthetic event step');axes[0].legend(frameon=False,fontsize=9)
     save(fig,'04_market_making_inventory.png','Quoting creates inventory and price risk',
-         'Both policies replay the same 500-event tape (seed 11). Residual inventory is marked, not liquidated.')
+         'Both policies replay the same 500-event tape (seed 11). Residual inventory is marked, not liquidated.',
+         note='Model assumption, not evidence: crossing orders always fill and no competing makers exist, so positive P&L reflects the toy rules.')
 
 
 def build(output, plots=True):
