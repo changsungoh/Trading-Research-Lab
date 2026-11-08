@@ -1,0 +1,2 @@
+# Optional demonstration plotting dependency; core research engines do not require it.
+matplotlib==3.11.2

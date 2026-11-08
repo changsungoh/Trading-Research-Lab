@@ -2,9 +2,20 @@
 
 An offline Python toolkit for evaluating trading signals **honestly**: it makes the quality of the data, the cost of execution and the statistical uncertainty visible before any number is trusted.
 
-Built around short-horizon (5/10/30-minute) signal research on Korean equities, but the methodology is market-agnostic. Standard library only for all calculations and CLIs; 89 automated tests.
+Built around short-horizon (5/10/30-minute) signal research on Korean equities, but the methodology is market-agnostic. Standard library only for all calculations and CLIs; 93 automated tests.
 
 > **This is a research tool, not investment advice.** Nothing here establishes that any strategy is profitable. Every report is labeled *exploratory*; there is no "edge" verdict, p-value, or automatic winner selection. Example parameters are illustrative, not current fees, tax rates or recommendations.
+
+## Synthetic example: inspect the output first
+
+**Synthetic data only — not live performance.** Explore a reproducible 60-day, 360-candidate example covering data quality, uncertainty, costs, missing exits, allocation stress and market-making inventory.
+
+[Read the full example report](examples/synthetic/README.md) · [Reproduce it](examples/generate_synthetic_demo.py) · [Audit inputs and hashes](examples/synthetic/manifest.json)
+
+![Synthetic data quality and uncertainty](examples/synthetic/figures/01_quality_and_uncertainty.png)
+
+The sample includes negative cost-adjusted results and deliberately unpriced exits; it does not select or advertise a profitable strategy. All inputs, symbols and assumptions are fictional. Plot generation uses the optional dependency in `examples/requirements.txt`; the research engines keep their existing dependencies.
+
 
 ## What it does
 
@@ -27,7 +38,7 @@ Built around short-horizon (5/10/30-minute) signal research on Korean equities, 
 ## Quick start
 
 ```bash
-python -m unittest discover -s tests -v          # 89 tests, no network, no accounts
+python -m unittest discover -s tests -v          # 93 tests, no network, no accounts
 
 # P4 needs no database:
 python market_making_report.py --config simulation/market_making.example.json \
@@ -74,5 +85,5 @@ portfolio_risk_report.py        P3 CLI           simulation/portfolio_allocation
 market_making_report.py         P4 CLI           simulation/market_making_simulator.py
 export_signal_research.py, import_signal_research_csv_to_db.py
 simulation/*.example.json       illustrative configs
-tests/                          89 tests on synthetic data
+tests/                          93 tests on synthetic data
 ```
