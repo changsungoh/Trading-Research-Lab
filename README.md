@@ -6,6 +6,18 @@ Built around short-horizon (5/10/30-minute) signal research on Korean equities, 
 
 > **This is a research tool, not investment advice.** Nothing here establishes that any strategy is profitable. Every report is labeled *exploratory*; there is no "edge" verdict, p-value, or automatic winner selection. Example parameters are illustrative, not current fees, tax rates or recommendations.
 
+**Jump to:** [What it does](#what-it-does) · [Synthetic example](#synthetic-example-inspect-the-output-first) · [Quick start](#quick-start) · [Limitations](#limitations)
+
+## What it does
+
+| Stage | Question it answers | Document |
+|---|---|---|
+| **P0 Data integrity** | Can I trust the recorded returns? | [P0_DATA_INTEGRITY.md](P0_DATA_INTEGRITY.md) |
+| **P1 Statistical validation** | Does the result persist across many days, with what uncertainty? | [P1_STATISTICAL_RESEARCH.md](P1_STATISTICAL_RESEARCH.md) |
+| **P2 Execution & cash simulation** | What is left after fees, tax, spread, slippage and partial fills? | [P2_EXECUTION_SIMULATION.md](P2_EXECUTION_SIMULATION.md) |
+| **P3 Allocation & concentration** | How much to allocate, and what risk does the book carry? | [P3_PORTFOLIO_RISK.md](P3_PORTFOLIO_RISK.md) |
+| **P4 Market-making lab** | What would a causal quoting policy earn and risk? | [P4_MARKET_MAKING.md](P4_MARKET_MAKING.md) |
+
 ## Synthetic example: inspect the output first
 
 **Synthetic data only — not live performance.** Explore a reproducible 60-day, 360-candidate example covering data quality, uncertainty, costs, missing exits, allocation stress and market-making inventory.
@@ -38,18 +50,7 @@ An inventory-skewed quoting policy holds less residual inventory than symmetric 
 
 The sample includes negative cost-adjusted results and deliberately unpriced exits; it does not select or advertise a profitable strategy. All inputs, symbols and assumptions are fictional. Plot generation uses the optional dependency in `examples/requirements.txt`; the research engines keep their existing dependencies.
 
-
-## What it does
-
-| Stage | Question it answers | Document |
-|---|---|---|
-| **P0 Data integrity** | Can I trust the recorded returns? | [P0_DATA_INTEGRITY.md](P0_DATA_INTEGRITY.md) |
-| **P1 Statistical validation** | Does the result persist across many days, with what uncertainty? | [P1_STATISTICAL_RESEARCH.md](P1_STATISTICAL_RESEARCH.md) |
-| **P2 Execution & cash simulation** | What is left after fees, tax, spread, slippage and partial fills? | [P2_EXECUTION_SIMULATION.md](P2_EXECUTION_SIMULATION.md) |
-| **P3 Allocation & concentration** | How much to allocate, and what risk does the book carry? | [P3_PORTFOLIO_RISK.md](P3_PORTFOLIO_RISK.md) |
-| **P4 Market-making lab** | What would a causal quoting policy earn and risk? | [P4_MARKET_MAKING.md](P4_MARKET_MAKING.md) |
-
-### Design principles
+## Design principles
 
 - **Observation quality is explicit.** Each horizon is `VALID`, `STALE`, `MISSING`, `OUT_OF_SESSION`, and so on. Missing outcomes are never zero-filled, and a late quote never passes as a clean return.
 - **No look-ahead.** Sizing uses only outcomes completed strictly before the decision; market-making quotes use only previously observed prices; future markouts are diagnostics, never inputs.
