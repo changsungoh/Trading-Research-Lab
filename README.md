@@ -1,4 +1,4 @@
-# Quant Research Lab
+# Trading Research Lab
 
 An offline Python toolkit for evaluating trading signals **honestly**: it makes the quality of the data, the cost of execution and the statistical uncertainty visible before any number is trusted.
 
@@ -87,3 +87,7 @@ export_signal_research.py, import_signal_research_csv_to_db.py
 simulation/*.example.json       illustrative configs
 tests/                          93 tests on synthetic data
 ```
+
+## License
+
+MIT. See [LICENSE](LICENSE).
