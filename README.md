@@ -12,7 +12,29 @@ Built around short-horizon (5/10/30-minute) signal research on Korean equities, 
 
 [Read the full example report](examples/synthetic/README.md) · [Reproduce it](examples/generate_synthetic_demo.py) · [Audit inputs and hashes](examples/synthetic/manifest.json)
 
+### 1. Data quality and uncertainty
+
 ![Synthetic data quality and uncertainty](examples/synthetic/figures/01_quality_and_uncertainty.png)
+
+Missing, stale and unverified observations are counted per horizon and never zero-filled. Intervals resample whole dates, and the ones shown here include zero.
+
+### 2. Costs and missing exits
+
+![Synthetic costs and unpriced exits](examples/synthetic/figures/02_costs_and_unknown_exits.png)
+
+Assumed fees, tax, spread and slippage turn a near-zero gross result into a clearly negative net one. Positions with no priced exit stay open with their cash reserved.
+
+### 3. Allocation and simultaneous stress
+
+![Synthetic allocation and stress](examples/synthetic/figures/03_allocation_and_stress.png)
+
+Three sizing rules compared on daily peak exposure and on compounded market + sector shocks. Cost-basis exposure only; not VaR.
+
+### 4. Market-making inventory
+
+![Synthetic market-making inventory](examples/synthetic/figures/04_market_making_inventory.png)
+
+An inventory-skewed quoting policy holds less residual inventory than symmetric quotes on the same tape. Positive P&L here reflects the toy model's assumptions (every crossing order fills, no competitors), not evidence of a profitable strategy.
 
 The sample includes negative cost-adjusted results and deliberately unpriced exits; it does not select or advertise a profitable strategy. All inputs, symbols and assumptions are fictional. Plot generation uses the optional dependency in `examples/requirements.txt`; the research engines keep their existing dependencies.
 
