@@ -1,0 +1,49 @@
+{
+  "market": {
+    "steps": 500,
+    "initial_mid": 100,
+    "volatility_bps": 5,
+    "drift_bps": 0,
+    "arrival_probability": 0.8,
+    "informed_probability": 0.3,
+    "taker_reach_bps": 20,
+    "max_taker_quantity": 15
+  },
+  "policies": [
+    {
+      "initial_cash": 100000,
+      "initial_mid": 100,
+      "tick_size": 0.01,
+      "quote_quantity": 10,
+      "max_inventory": 100,
+      "max_notional_fraction": 0.5,
+      "half_spread_bps": 10,
+      "ewma_alpha": 0.5,
+      "fee_bps": 1,
+      "max_drawdown_pct": 5,
+      "markout_steps": 5,
+      "name": "symmetric_quotes",
+      "inventory_skew_bps": 0
+    },
+    {
+      "initial_cash": 100000,
+      "initial_mid": 100,
+      "tick_size": 0.01,
+      "quote_quantity": 10,
+      "max_inventory": 100,
+      "max_notional_fraction": 0.5,
+      "half_spread_bps": 10,
+      "ewma_alpha": 0.5,
+      "fee_bps": 1,
+      "max_drawdown_pct": 5,
+      "markout_steps": 5,
+      "name": "inventory_skewed_quotes",
+      "inventory_skew_bps": 30
+    }
+  ],
+  "seeds": [
+    11,
+    29,
+    47
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "portfolio": {
+    "initial_cash": 1000000,
+    "position_fraction": 0.25,
+    "max_positions": 4,
+    "max_trades_per_day": 10,
+    "daily_loss_limit_pct": 3,
+    "max_consecutive_losses": 3
+  },
+  "scenarios": [
+    {
+      "name": "zero_cost_reference_not_realistic",
+      "buy_fee_bps": 0,
+      "sell_fee_bps": 0,
+      "sell_tax_bps": 0,
+      "spread_bps": 0,
+      "slippage_bps": 0,
+      "fill_probability": 1,
+      "fill_fraction": 1,
+      "exit_fill_probability": 1
+    },
+    {
+      "name": "illustrative_friction_not_current_rates",
+      "buy_fee_bps": 2,
+      "sell_fee_bps": 2,
+      "sell_tax_bps": 20,
+      "spread_bps": 10,
+      "slippage_bps": 5,
+      "fill_probability": 0.8,
+      "fill_fraction": 0.5,
+      "exit_fill_probability": 0.95
+    }
+  ]
+}

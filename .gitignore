@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+*.db
+*.sqlite
+*.sqlite3
+# generated reports and supplied data
+*_report.md
+*_report.json
+benchmark_intervals*.csv
+supplied_tape*.json
+signal_research.csv*
