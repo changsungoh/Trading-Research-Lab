@@ -94,7 +94,7 @@ def overall(stats, minute=10, partition='all'):
 
 
 def write_json(path, data):
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False, allow_nan=False) + '\n', encoding='utf-8')
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False, allow_nan=False) + '\n', encoding='utf-8',newline='\n')
 
 
 def graphs(directory, stats, executions, allocation, maker):
@@ -255,7 +255,7 @@ def build(output, plots=True):
     write_json(output/'statistics.json',stats)
     write_json(output/'execution.json',dict(label=LABEL,cases=['clean_zero','clean_friction','clean_partial','quality_friction'],results=executions))
     write_json(output/'allocation.json',allocation);write_json(output/'market_making.json',maker)
-    (output/'statistics.md').write_text('> '+LABEL+'\n\n'+render_statistics(stats),encoding='utf-8')
+    (output/'statistics.md').write_text('> '+LABEL+'\n\n'+render_statistics(stats),encoding='utf-8',newline='\n')
     if plots:
         (output/'figures').mkdir(exist_ok=True)
         graphs(output/'figures',stats,executions,allocation,maker)
@@ -317,7 +317,7 @@ def build(output, plots=True):
        'These files are generated solely from the checked-in demo, public research engines and explicit constants. They contain no API keys, account identifiers, real trades, internal entry rules or inferred real performance.']
     if not plots:
         lines=[line for line in lines if not line.startswith('![')]
-    (output/'README.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    (output/'README.md').write_text('\n'.join(lines)+'\n',encoding='utf-8',newline='\n')
     files=sorted(path for path in output.rglob('*') if path.is_file() and path.name!='manifest.json')
     write_json(output/'manifest.json',dict(label=LABEL,seed=SEED,holdout_start=cutoff,
         python=sys.version.split()[0],plotting=__import__('matplotlib').__version__ if plots else None,

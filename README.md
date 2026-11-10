@@ -2,7 +2,7 @@
 
 An offline Python toolkit for evaluating trading signals **honestly**: it makes the quality of the data, the cost of execution and the statistical uncertainty visible before any number is trusted.
 
-Built around short-horizon (5/10/30-minute) signal research on Korean equities, but the methodology is market-agnostic. Standard library only for all calculations and CLIs; 93 automated tests.
+Built around short-horizon (5/10/30-minute) signal research on Korean equities, with transferable research methods. Core calculations and P1–P4 report CLIs use only the standard library; 96 automated tests. The legacy CSV import helper optionally requires pandas.
 
 > **This is a research tool, not investment advice.** Nothing here establishes that any strategy is profitable. Every report is labeled *exploratory*; there is no "edge" verdict, p-value, or automatic winner selection. Example parameters are illustrative, not current fees, tax rates or recommendations.
 
@@ -60,8 +60,22 @@ The sample includes negative cost-adjusted results and deliberately unpriced exi
 
 ## Quick start
 
+Tested on Python 3.12 and 3.14. No credentials, real data or third-party packages are needed for tests and the SQLite walkthrough.
+
 ```bash
-python -m unittest discover -s tests -v          # 93 tests, no network, no accounts
+# Create a synthetic SQLite database and run P1, P2 and P3 in one command:
+python examples/run_research.py
+
+# Verify the committed example outputs:
+python examples/verify_artifacts.py
+```
+
+Results are written to `demo_output/`: synthetic input DB, Markdown/JSON reports and input hashes. Use `--output PATH` for a different empty directory; existing results are never overwritten. Missing exits intentionally produce null terminal equity.
+
+Optional dependencies: plotting uses `python -m pip install -r examples/requirements.txt`; the legacy `import_signal_research_csv_to_db.py` helper uses `python -m pip install -r requirements-import.txt`. Neither is required for the walkthrough or tests.
+
+```bash
+python -m unittest discover -s tests -v          # 96 tests, no network, no accounts
 
 # P4 needs no database:
 python market_making_report.py --config simulation/market_making.example.json \
@@ -83,6 +97,10 @@ python portfolio_risk_report.py --db trading_engine.db \
     --config simulation/allocation.example.json --horizon 5 --output portfolio_report.md
 ```
 
+## Engineering choices
+
+[Read the design decisions and validation cases](ENGINEERING_NOTES.md): observation timing, unresolved exits, clustered uncertainty and past-only sizing.
+
 ## Method highlights
 
 - **P1:** observation-weighted and equal-weight-per-date means; 95% percentile bootstrap that resamples whole entry dates (default seed 1729, 2,000 resamples, at least 30 observations over 20 dates); quantiles; per-date results; benchmark excess return only on exact timestamp pairs.
@@ -94,6 +112,7 @@ python portfolio_risk_report.py --db trading_engine.db \
 
 - Costs, fill probabilities, flow models and sector labels are **assumptions**. They are not calibrated to a real order book, queue, market impact or broker fee schedule.
 - Research timestamps are receipt times, not exchange trade times.
+- The public observation validator assumes weekday KST regular-session hours; it does not include a complete exchange holiday/special-session calendar.
 - P3 stress uses entry reference prices and cost-basis exposure, not mark-to-market values or an empirical correlation matrix. It is not VaR.
 - P4 is a toy single-asset model with synthetic or supplied event tapes.
 - The live quote collector that produces P0 observations is not part of this repository.
@@ -108,7 +127,7 @@ portfolio_risk_report.py        P3 CLI           simulation/portfolio_allocation
 market_making_report.py         P4 CLI           simulation/market_making_simulator.py
 export_signal_research.py, import_signal_research_csv_to_db.py
 simulation/*.example.json       illustrative configs
-tests/                          93 tests on synthetic data
+tests/                          96 tests on synthetic data
 ```
 
 ## License

@@ -11,3 +11,6 @@ __pycache__/
 benchmark_intervals*.csv
 supplied_tape*.json
 signal_research.csv*
+
+# Synthetic SQLite walkthrough outputs
+demo_output/
