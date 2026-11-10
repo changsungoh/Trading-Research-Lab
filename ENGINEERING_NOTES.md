@@ -12,3 +12,9 @@ This repository demonstrates research infrastructure through fictional data, not
 | A demo can be difficult to reproduce on another machine | Provide a synthetic SQLite walkthrough, explicit optional dependencies, LF text and artifact hashes | Cross-platform CI runs tests and verifies committed artifacts |
 
 The next validation step for real-world use would be independent market data and calibrated execution assumptions. Synthetic outputs alone cannot establish economic value.
+
+## Walkthrough failure contract
+
+A completed manifest is published only after every report has been generated, the input DB hash has been rechecked and artifact hashes have been written. A failure records its stage and error type without publishing a completion marker. Temporary database destinations are restored even after schema/insert errors or interruption. Concurrent runs cannot take over the same output directory.
+
+Input validation rejects malformed timestamps, nonfinite/nonpositive prices, inconsistent VALID labels and duplicate identities. Legitimate missing outcomes remain missing. Alias checks cover hard links as well as normalized paths, preventing report writes through another name for an input or another output. Full-run repeatability tests compare both analysis artifacts and their fingerprints for identical inputs/configuration/seeds.

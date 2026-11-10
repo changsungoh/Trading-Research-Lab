@@ -1,4 +1,5 @@
 """P3 offline allocation-policy comparisons and simultaneous downside stresses."""
+from research.safe_paths import unsafe_outputs
 import argparse
 from dataclasses import asdict
 from datetime import date
@@ -143,7 +144,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     sources = {Path(path).resolve() for path in (args.db, args.config)}
     outputs = [Path(path).resolve() for path in (args.output, args.json_output) if path]
-    if len(set(outputs)) != len(outputs) or any(path in sources for path in outputs):
+    if unsafe_outputs(sources, outputs):
         parser.error('Report outputs must differ from inputs and each other')
     try:
         policy, scenarios, allocations, sectors, stresses = load_config(args.config)

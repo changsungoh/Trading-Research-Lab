@@ -1,4 +1,5 @@
 """P1 CLI: read committed P0 SQLite research and emit an offline report."""
+from research.safe_paths import unsafe_outputs
 import argparse
 import json
 import sqlite3
@@ -26,7 +27,7 @@ def main(argv=None):
         parser.error('--benchmark-csv and --benchmark-name must be supplied together')
     sources = {Path(path).resolve() for path in (args.db, args.benchmark_csv) if path}
     outputs = [Path(path).resolve() for path in (args.output, args.json_output) if path]
-    if len(set(outputs)) != len(outputs) or any(path in sources for path in outputs):
+    if unsafe_outputs(sources, outputs):
         parser.error('Report output paths must differ from inputs and each other')
     try:
         benchmark = load_benchmark(args.benchmark_csv, args.benchmark_name) if args.benchmark_csv else None

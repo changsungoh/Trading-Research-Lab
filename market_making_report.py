@@ -1,4 +1,5 @@
 """P4 reproducible synthetic/tape market-making experiments, no live trading."""
+from research.safe_paths import unsafe_outputs
 import argparse
 from dataclasses import asdict
 import json
@@ -106,7 +107,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     sources = {Path(path).resolve() for path in (args.config, args.tape) if path}
     outputs = [Path(path).resolve() for path in (args.output, args.json_output) if path]
-    if len(set(outputs)) != len(outputs) or any(path in sources for path in outputs):
+    if unsafe_outputs(sources, outputs):
         parser.error('Report outputs must differ from inputs and each other')
     try:
         market, policies, seeds = load_config(args.config)

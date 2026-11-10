@@ -2,7 +2,7 @@
 
 An offline Python toolkit for evaluating trading signals **honestly**: it makes the quality of the data, the cost of execution and the statistical uncertainty visible before any number is trusted.
 
-Built around short-horizon (5/10/30-minute) signal research on Korean equities, with transferable research methods. Core calculations and P1–P4 report CLIs use only the standard library; 96 automated tests. The legacy CSV import helper optionally requires pandas.
+Built around short-horizon (5/10/30-minute) signal research on Korean equities, with transferable research methods. Core calculations and P1–P4 report CLIs use only the standard library; 120 automated tests. The legacy CSV import helper optionally requires pandas.
 
 > **This is a research tool, not investment advice.** Nothing here establishes that any strategy is profitable. Every report is labeled *exploratory*; there is no "edge" verdict, p-value, or automatic winner selection. Example parameters are illustrative, not current fees, tax rates or recommendations.
 
@@ -72,10 +72,12 @@ python examples/verify_artifacts.py
 
 Results are written to `demo_output/`: synthetic input DB, Markdown/JSON reports and input hashes. Use `--output PATH` for a different empty directory; existing results are never overwritten. Missing exits intentionally produce null terminal equity.
 
+The walkthrough builds in a temporary directory and publishes `manifest.json` last. `run_status.json` records in-progress, failed or complete state; failed runs cannot pass artifact verification. If a run fails, inspect its stage and use a fresh output directory to retry. Input DB/config files are protected even when an output is a hard-link alias.
+
 Optional dependencies: plotting uses `python -m pip install -r examples/requirements.txt`; the legacy `import_signal_research_csv_to_db.py` helper uses `python -m pip install -r requirements-import.txt`. Neither is required for the walkthrough or tests.
 
 ```bash
-python -m unittest discover -s tests -v          # 96 tests, no network, no accounts
+python -m unittest discover -s tests -v          # 120 tests, no network, no accounts
 
 # P4 needs no database:
 python market_making_report.py --config simulation/market_making.example.json \
@@ -96,6 +98,10 @@ python execution_simulation_report.py --db trading_engine.db \
 python portfolio_risk_report.py --db trading_engine.db \
     --config simulation/allocation.example.json --horizon 5 --output portfolio_report.md
 ```
+
+## Failure and reproducibility coverage
+
+The suite includes 24 end-to-end resilience tests covering database destination restoration, invalid input metadata, full-run determinism, source/output aliases, interruption and incomplete publication. These supplement the existing engine-level arithmetic, timing and look-ahead tests; all fixtures are synthetic.
 
 ## Engineering choices
 
@@ -127,7 +133,7 @@ portfolio_risk_report.py        P3 CLI           simulation/portfolio_allocation
 market_making_report.py         P4 CLI           simulation/market_making_simulator.py
 export_signal_research.py, import_signal_research_csv_to_db.py
 simulation/*.example.json       illustrative configs
-tests/                          96 tests on synthetic data
+tests/                          120 tests on synthetic data
 ```
 
 ## License
